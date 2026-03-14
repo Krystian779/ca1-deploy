@@ -1,0 +1,45 @@
+@if (movieService.movies().length > 0) {
+  <div class="row">
+    @for (movie of movieService.movies(); track movie.imdbID) {
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 movie-card">
+          <img class="card-img-top movie-poster" [src]="movie.Poster" [alt]="movie.Title" />
+
+          <div class="card-body">
+            <h5>{{ movie.Title }}</h5>
+            <p>{{ movie.Year }}</p>
+
+            <a class="btn btn-dark" [routerLink]="['/movie', movie.imdbID]"> Details </a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="page-buttons">
+    <button
+      class="btn btn-secondary me-2"
+      (click)="movieService.previousPage()"
+      [disabled]="movieService.currentPage() === 1"
+    >
+      Previous
+    </button>
+
+    <span class="me-2">
+      Page {{ movieService.currentPage() }} of {{ movieService.getMaxPages() }}
+    </span>
+
+    <button
+      class="btn btn-secondary"
+      (click)="movieService.nextPage()"
+      [disabled]="movieService.currentPage() === movieService.getMaxPages()"
+    >
+      Next
+    </button>
+  </div>
+}
+@if (movieService.movie()?.Response === 'False') {
+  <div class="alert alert-danger mt-3">
+    {{ movieService.movie()?.Error }}
+  </div>
+}
